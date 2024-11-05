@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Grid Resource Allocation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Resource Allocation for Smart Grids</h2>
+    <canvas id="allocationChart" width="800" height="400"></canvas>
+
+    <script>
+        // Sample data for demands and resources
+        const regions = 5;
+        const demands = [30, 40, 25, 35, 45];
+        const resources = [60, 55, 35, 70, 50];
+
+        // Greedy allocation function
+        function greedyAllocation(demands, resources) {
+            return demands.map((demand, i) => Math.min(demand, resources[i]));
+        }
+
+        // DP allocation function
+        function dpAllocation(demands, resources) {
+            return demands.map((demand, i) => demand <= resources[i] ? demand : resources[i]);
+        }
+
+        // Generate allocation data
+        const greedyAlloc = greedyAllocation(demands, resources);
+        const dpAlloc = dpAllocation(demands, resources);
+
+        // Create the bar chart
+        const ctx = document.getElementById('allocationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Region 1', 'Region 2', 'Region 3', 'Region 4', 'Region 5'],
+                datasets: [
+                    {
+                        label: 'Demand',
+                        data: demands,
+                        backgroundColor: 'rgba(128, 128, 128, 0.7)',
+                        borderColor: 'rgba(128, 128, 128, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Greedy Allocation',
+                        data: greedyAlloc,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'DP Allocation',
+                        data: dpAlloc,
+                        backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Grid Regions'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Energy Units'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
